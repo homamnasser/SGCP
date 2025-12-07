@@ -1,0 +1,6 @@
+@SGCP_HostAddress = http://localhost:5265
+
+GET {{SGCP_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
