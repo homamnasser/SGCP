@@ -145,6 +145,58 @@
   },
   {
     "ContainingType": "SGCP.Controllers.ComplaintController",
+    "Method": "GetComplaint",
+    "RelativePath": "api/Complaint/GetComplaint/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "SGCP.DTOs.Responses.ComplaintTypeResponseDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SGCP.Controllers.ComplaintController",
+    "Method": "GetComplaintsByGoverment",
+    "RelativePath": "api/Complaint/GetComplaintsByGovernment/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "SGCP.DTOs.Responses.ComplaintTypeResponseDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SGCP.Controllers.ComplaintController",
     "Method": "GetUserComplaints",
     "RelativePath": "api/Complaint/my-complaints",
     "HttpMethod": "GET",

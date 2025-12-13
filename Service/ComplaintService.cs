@@ -47,6 +47,7 @@ namespace SGCP.Service
                 .Include(c => c.Government)
                 .Include(c => c.Type)
                 .FirstOrDefaultAsync(c => c.Id == id);
+
         }
 
         public ICollection<Complaint> GetComplaints()
@@ -65,6 +66,7 @@ namespace SGCP.Service
                 .Where(c => c.GovernmentId == govId)
                 .Include(c => c.Attachments)
                 .Include(c => c.User)
+                .Include(c => c.Government)
                 .Include(c => c.Type)
                 .ToListAsync();
         }

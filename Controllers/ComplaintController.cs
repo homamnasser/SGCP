@@ -208,7 +208,57 @@ namespace SGCP.Controllers
             return Ok(responseList);
         }
 
+        [Authorize]
+        [HttpGet("GetComplaint/{id}")]
 
+        public async Task<ActionResult<ComplaintTypeResponseDto>> GetComplaint(int id)
+        {
+            var existingComplaint = await _complaintService.ComplaintExists(id);
+            if (!existingComplaint)
+                return NotFound("Complaint not found");
+
+            var complaint = await _complaintService.GetComplaint(id);
+
+            var response = _mapper.Map<ComplaintResponseDto>(complaint);
+            response.Status = complaint.Status.ToString();
+
+
+            var attachments = await _complaintService.GetAttachments(complaint.Id);
+            response.Attachments = attachments.Select(a => a.ImagePath).ToList();
+            return Ok(response);
+        }
+       
+        
+        [Authorize]
+        [HttpGet("GetComplaintsByGovernment/{id}")]
+        public async Task<ActionResult<ComplaintTypeResponseDto>> GetComplaintsByGoverment(int id)
+        {
+            var existingGovernment = await _governmentService.GovernmentExists(id);
+            if (!existingGovernment)
+                return NotFound("Government not found");
+            var complaints = await _complaintService.GetComplaintsByGoverment(id);
+            var responseList = new List<ComplaintResponseDto>();
+
+            foreach (var complaint in complaints)
+            {
+                var resDto = _mapper.Map<ComplaintResponseDto>(complaint);
+
+                resDto.Status = complaint.Status.ToString();
+
+                var attachments = await _complaintService.GetAttachments(complaint.Id);
+                resDto.Attachments = attachments.Select(a => a.ImagePath).ToList();
+
+                var government = await _governmentService.GetGovernment(complaint.GovernmentId);
+                resDto.Government = _mapper.Map<GovernmentResponseDto>(government);
+
+                var type = await _complaintTypeService.GetType(complaint.TypeId);
+                resDto.Type = _mapper.Map<ComplaintTypeResponseDto>(type);
+
+                responseList.Add(resDto);
+            }
+
+            return Ok(responseList);
+        }
 
 
     }

@@ -5193,23 +5193,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Suliman\\.nuget\\packages\\": {},
+    "C:\\Users\\homam\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Suliman\\Desktop\\SGCP\\SGCP\\SGCP.csproj",
+      "projectUniqueName": "D:\\SGCP\\SGCP\\SGCP.csproj",
       "projectName": "SGCP",
-      "projectPath": "C:\\Users\\Suliman\\Desktop\\SGCP\\SGCP\\SGCP.csproj",
-      "packagesPath": "C:\\Users\\Suliman\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Suliman\\Desktop\\SGCP\\SGCP\\obj\\",
+      "projectPath": "D:\\SGCP\\SGCP\\SGCP.csproj",
+      "packagesPath": "C:\\Users\\homam\\.nuget\\packages\\",
+      "outputPath": "D:\\SGCP\\SGCP\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Suliman\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\homam\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
