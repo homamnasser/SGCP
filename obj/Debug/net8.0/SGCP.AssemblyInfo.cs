@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SGCP")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a48607f7acb1e2d25ef1554cea9bc5f2277c3655")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3429eb5cf16656ef435d5fe864687d2a7a3f850d")]
 [assembly: System.Reflection.AssemblyProductAttribute("SGCP")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SGCP")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
