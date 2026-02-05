@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SGCP.Migrations
 {
     /// <inheritdoc />
-    public partial class @new : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -38,6 +38,22 @@ namespace SGCP.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OtpCodes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ExpiryTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsUsed = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OtpCodes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
                 {
@@ -63,8 +79,12 @@ namespace SGCP.Migrations
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Token = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RoleId = table.Column<int>(type: "int", nullable: false),
+                    OTP = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     GovernmentId = table.Column<int>(type: "int", nullable: true),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    FailedLoginAttempts = table.Column<int>(type: "int", nullable: false),
+                    LockoutEnd = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    FcmToken = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -84,6 +104,30 @@ namespace SGCP.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AuditLogs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: true),
+                    Action = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Entity = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    EntityId = table.Column<int>(type: "int", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AuditLogs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AuditLogs_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Complaints",
                 columns: table => new
                 {
@@ -96,6 +140,7 @@ namespace SGCP.Migrations
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<int>(type: "int", nullable: false),
                     ReferenceNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -145,26 +190,6 @@ namespace SGCP.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ComplaintAttachments",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ComplaintId = table.Column<int>(type: "int", nullable: false),
-                    ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ComplaintAttachments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ComplaintAttachments_Complaints_ComplaintId",
-                        column: x => x.ComplaintId,
-                        principalTable: "Complaints",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ComplaintHistories",
                 columns: table => new
                 {
@@ -172,8 +197,12 @@ namespace SGCP.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ComplaintId = table.Column<int>(type: "int", nullable: false),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
-                    OldStatus = table.Column<int>(type: "int", nullable: false),
-                    NewStatus = table.Column<int>(type: "int", nullable: false),
+                    GovernmentId = table.Column<int>(type: "int", nullable: false),
+                    TypeId = table.Column<int>(type: "int", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    ReferenceNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -181,11 +210,23 @@ namespace SGCP.Migrations
                 {
                     table.PrimaryKey("PK_ComplaintHistories", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_ComplaintHistories_ComplaintTypes_TypeId",
+                        column: x => x.TypeId,
+                        principalTable: "ComplaintTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_ComplaintHistories_Complaints_ComplaintId",
                         column: x => x.ComplaintId,
                         principalTable: "Complaints",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ComplaintHistories_Governments_GovernmentId",
+                        column: x => x.GovernmentId,
+                        principalTable: "Governments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ComplaintHistories_Users_EmployeeId",
                         column: x => x.EmployeeId,
@@ -222,6 +263,43 @@ namespace SGCP.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ComplaintAttachments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ComplaintId = table.Column<int>(type: "int", nullable: false),
+                    ComplaintHistoryId = table.Column<int>(type: "int", nullable: true),
+                    ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ComplaintAttachments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ComplaintAttachments_ComplaintHistories_ComplaintHistoryId",
+                        column: x => x.ComplaintHistoryId,
+                        principalTable: "ComplaintHistories",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_ComplaintAttachments_Complaints_ComplaintId",
+                        column: x => x.ComplaintId,
+                        principalTable: "Complaints",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AuditLogs_UserId",
+                table: "AuditLogs",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ComplaintAttachments_ComplaintHistoryId",
+                table: "ComplaintAttachments",
+                column: "ComplaintHistoryId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_ComplaintAttachments_ComplaintId",
                 table: "ComplaintAttachments",
@@ -236,6 +314,16 @@ namespace SGCP.Migrations
                 name: "IX_ComplaintHistories_EmployeeId",
                 table: "ComplaintHistories",
                 column: "EmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ComplaintHistories_GovernmentId",
+                table: "ComplaintHistories",
+                column: "GovernmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ComplaintHistories_TypeId",
+                table: "ComplaintHistories",
+                column: "TypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ComplaintLocks_ComplaintId",
@@ -302,16 +390,22 @@ namespace SGCP.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ComplaintAttachments");
+                name: "AuditLogs");
 
             migrationBuilder.DropTable(
-                name: "ComplaintHistories");
+                name: "ComplaintAttachments");
 
             migrationBuilder.DropTable(
                 name: "ComplaintLocks");
 
             migrationBuilder.DropTable(
                 name: "Notifications");
+
+            migrationBuilder.DropTable(
+                name: "OtpCodes");
+
+            migrationBuilder.DropTable(
+                name: "ComplaintHistories");
 
             migrationBuilder.DropTable(
                 name: "Complaints");

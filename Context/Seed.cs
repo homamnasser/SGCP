@@ -38,6 +38,8 @@ namespace SGCP.Context
                         Email = "admin@system.local",
                         Password = PasswordHashHandler.HashPassword("Admin@123"),
                         RoleId = adminRole.Id,
+                        IsActive= true
+
                     };
 
                     _context.Users.Add(adminUser);

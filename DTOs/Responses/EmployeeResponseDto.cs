@@ -11,8 +11,6 @@ namespace SGCP.DTOs.Responses
         public string? Email { get; set; }
         public string? Phone { get; set; }
 
-        public string? Password { get; set; }
-
         public RoleResponseDto? Role { get; set; }
 
         public bool? IsActive { get; set; } = true;

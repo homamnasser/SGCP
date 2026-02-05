@@ -2,5 +2,6 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ActiveDebugProfile>https</ActiveDebugProfile>
+    <NameOfLastUsedPublishProfile>C:\Users\Suliman\Desktop\pro\New folder\New folder %282%29\SGCP\SGCP\Properties\PublishProfiles\site47115-WebDeploy1.pubxml</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>

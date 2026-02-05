@@ -23,15 +23,23 @@ namespace SGCP.Models
         public string? Token { get; set; }
 
         public int RoleId { get; set; }
-        public Role Role  { get; set; } 
+        public Role Role  { get; set; }
 
-        public int? GovernmentId { get; set; }
+         public string? OTP { get; set; } = null;
+
+
+         public int? GovernmentId { get; set; }
         public Government? Government { get; set; }
+        public int FailedLoginAttempts { get; set; } = 0;
 
-        public bool IsActive { get; set; } = true;
+        public DateTime? LockoutEnd { get; set; }
+        public bool IsActive { get; set; } = false;
+        public string? FcmToken { get; set; }
 
         public ICollection<Complaint> Complaints { get; set; }
         public ICollection<ComplaintHistory> ComplaintHistories { get; set; }
+        public ICollection<AuditLog> AuditLogs { get; set; } 
+
         public ICollection<Notification> Notifications { get; set; }
     }
 }

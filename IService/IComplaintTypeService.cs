@@ -4,7 +4,7 @@ namespace SGCP.IService
 {
     public interface IComplaintTypeService
     {
-        ICollection<ComplaintType> GetTypes();
+        Task<ICollection<ComplaintType>> GetTypes();
         Task<ComplaintType?> GetType(int id);
         Task<bool> TypeExists(int id);
 
@@ -13,6 +13,8 @@ namespace SGCP.IService
         Task<bool> CreateType(ComplaintType type);
         Task<bool> UpdateType(ComplaintType type);
         Task<bool> DeleteType(ComplaintType type);
+
+        
 
         Task<ICollection<Complaint>> GetComplaintsByType(int typeID);
 

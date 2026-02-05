@@ -12,8 +12,8 @@ using SGCP.Context;
 namespace SGCP.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20251213074352_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20251230225608_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,44 @@ namespace SGCP.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("SGCP.Models.AuditLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Entity")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("EntityId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AuditLogs");
+                });
 
             modelBuilder.Entity("SGCP.Models.Complaint", b =>
                 {
@@ -44,6 +82,10 @@ namespace SGCP.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Note")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReferenceNumber")
@@ -78,14 +120,22 @@ namespace SGCP.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("ComplaintHistoryId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ComplaintId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("ImagePath")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ComplaintHistoryId");
 
                     b.HasIndex("ComplaintId");
 
@@ -106,16 +156,30 @@ namespace SGCP.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("NewStatus")
+                    b.Property<int>("GovernmentId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("OldStatus")
+                    b.Property<string>("ReferenceNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TypeId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -123,6 +187,10 @@ namespace SGCP.Migrations
                     b.HasIndex("ComplaintId");
 
                     b.HasIndex("EmployeeId");
+
+                    b.HasIndex("GovernmentId");
+
+                    b.HasIndex("TypeId");
 
                     b.ToTable("ComplaintHistories");
                 });
@@ -226,6 +294,32 @@ namespace SGCP.Migrations
                     b.ToTable("Notifications");
                 });
 
+            modelBuilder.Entity("SGCP.Models.OtpCode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ExpiryTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsUsed")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OtpCodes");
+                });
+
             modelBuilder.Entity("SGCP.Models.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -258,14 +352,26 @@ namespace SGCP.Migrations
                     b.Property<string>("EmpPassword")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("FailedLoginAttempts")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FcmToken")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("GovernmentId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime?>("LockoutEnd")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OTP")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
@@ -297,6 +403,16 @@ namespace SGCP.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("SGCP.Models.AuditLog", b =>
+                {
+                    b.HasOne("SGCP.Models.User", "User")
+                        .WithMany("AuditLogs")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("SGCP.Models.Complaint", b =>
                 {
                     b.HasOne("SGCP.Models.Government", "Government")
@@ -326,6 +442,10 @@ namespace SGCP.Migrations
 
             modelBuilder.Entity("SGCP.Models.ComplaintAttachment", b =>
                 {
+                    b.HasOne("SGCP.Models.ComplaintHistory", "ComplaintHistory")
+                        .WithMany("Attachments")
+                        .HasForeignKey("ComplaintHistoryId");
+
                     b.HasOne("SGCP.Models.Complaint", "Complaint")
                         .WithMany("Attachments")
                         .HasForeignKey("ComplaintId")
@@ -333,6 +453,8 @@ namespace SGCP.Migrations
                         .IsRequired();
 
                     b.Navigation("Complaint");
+
+                    b.Navigation("ComplaintHistory");
                 });
 
             modelBuilder.Entity("SGCP.Models.ComplaintHistory", b =>
@@ -340,7 +462,7 @@ namespace SGCP.Migrations
                     b.HasOne("SGCP.Models.Complaint", "Complaint")
                         .WithMany("History")
                         .HasForeignKey("ComplaintId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SGCP.Models.User", "Employee")
@@ -349,9 +471,25 @@ namespace SGCP.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("SGCP.Models.Government", "Government")
+                        .WithMany("ComplaintHistories")
+                        .HasForeignKey("GovernmentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SGCP.Models.ComplaintType", "Type")
+                        .WithMany("ComplaintHistories")
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Complaint");
 
                     b.Navigation("Employee");
+
+                    b.Navigation("Government");
+
+                    b.Navigation("Type");
                 });
 
             modelBuilder.Entity("SGCP.Models.ComplaintLock", b =>
@@ -409,13 +547,22 @@ namespace SGCP.Migrations
                     b.Navigation("History");
                 });
 
+            modelBuilder.Entity("SGCP.Models.ComplaintHistory", b =>
+                {
+                    b.Navigation("Attachments");
+                });
+
             modelBuilder.Entity("SGCP.Models.ComplaintType", b =>
                 {
+                    b.Navigation("ComplaintHistories");
+
                     b.Navigation("Complaints");
                 });
 
             modelBuilder.Entity("SGCP.Models.Government", b =>
                 {
+                    b.Navigation("ComplaintHistories");
+
                     b.Navigation("Complaints");
 
                     b.Navigation("Employees");
@@ -428,6 +575,8 @@ namespace SGCP.Migrations
 
             modelBuilder.Entity("SGCP.Models.User", b =>
                 {
+                    b.Navigation("AuditLogs");
+
                     b.Navigation("ComplaintHistories");
 
                     b.Navigation("Complaints");

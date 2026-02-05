@@ -11,6 +11,8 @@ namespace SGCP.Models
 
         public ICollection<User> Employees { get; set; }
         public ICollection<Complaint> Complaints { get; set; }
+        public ICollection<ComplaintHistory> ComplaintHistories { get; set; }
+
 
     }
 }

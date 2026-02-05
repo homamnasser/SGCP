@@ -19,10 +19,12 @@ namespace SGCP.Service
             return await Save();
         }
 
-        public Task<bool> DeleteType(ComplaintType type)
+        public async Task<bool> DeleteType(ComplaintType type)
         {
-            throw new NotImplementedException();
+            _context.ComplaintTypes.Remove(type);
+            return await _context.SaveChangesAsync() > 0;
         }
+
 
         public Task<ICollection<Complaint>> GetComplaintsByType(int typeID)
         {
@@ -35,9 +37,11 @@ namespace SGCP.Service
                 .FirstOrDefaultAsync(g => g.Id == id);
         }
 
-        public ICollection<ComplaintType> GetTypes()
+        public async Task<ICollection<ComplaintType>> GetTypes()
         {
-            throw new NotImplementedException();
+            return await _context.ComplaintTypes
+                .OrderBy(t => t.Name)
+                .ToListAsync();
         }
 
         public async Task<bool> Save()

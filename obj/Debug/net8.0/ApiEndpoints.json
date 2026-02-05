@@ -108,9 +108,192 @@
     ]
   },
   {
+    "ContainingType": "SGCP.Controllers.AuthController",
+    "Method": "RegisterVerify",
+    "RelativePath": "api/Auth/register/verify",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "otp",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SGCP.Controllers.AuthController",
+    "Method": "UpdateFCM",
+    "RelativePath": "api/Auth/update/fcm",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "fcmToken",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SGCP.Controllers.ComplaintController",
+    "Method": "AddAttachments",
+    "RelativePath": "api/complaint/{complaintId}/AddAttachments",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "complaintId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "attachments",
+        "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SGCP.Controllers.ComplaintController",
+    "Method": "ChangeStatus",
+    "RelativePath": "api/complaint/{id}/change-status",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "Status",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Note",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SGCP.Controllers.ComplaintController",
+    "Method": "GetComplaint",
+    "RelativePath": "api/complaint/{id}/GetComplaint",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "SGCP.DTOs.Responses.ComplaintTypeResponseDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SGCP.Controllers.ComplaintController",
+    "Method": "GetComplaintsByGoverment",
+    "RelativePath": "api/complaint/{id}/GetComplaintsByGovernment",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "SGCP.DTOs.Responses.ComplaintTypeResponseDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SGCP.Controllers.ComplaintController",
+    "Method": "GetHistory",
+    "RelativePath": "api/complaint/{id}/getHistoryByComplaintId",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SGCP.Controllers.ComplaintController",
+    "Method": "GetComplaintByNumber",
+    "RelativePath": "api/complaint/{number}/GetReferenceNumber",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "number",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "SGCP.DTOs.Responses.ComplaintTypeResponseDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "SGCP.Controllers.ComplaintController",
     "Method": "CreateComplaint",
-    "RelativePath": "api/Complaint/create",
+    "RelativePath": "api/complaint/create",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -145,60 +328,8 @@
   },
   {
     "ContainingType": "SGCP.Controllers.ComplaintController",
-    "Method": "GetComplaint",
-    "RelativePath": "api/Complaint/GetComplaint/{id}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "SGCP.DTOs.Responses.ComplaintTypeResponseDto",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "SGCP.Controllers.ComplaintController",
-    "Method": "GetComplaintsByGoverment",
-    "RelativePath": "api/Complaint/GetComplaintsByGovernment/{id}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "SGCP.DTOs.Responses.ComplaintTypeResponseDto",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "SGCP.Controllers.ComplaintController",
     "Method": "GetUserComplaints",
-    "RelativePath": "api/Complaint/my-complaints",
+    "RelativePath": "api/complaint/myComplaints",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -207,8 +338,91 @@
   },
   {
     "ContainingType": "SGCP.Controllers.ComplaintController",
+    "Method": "GetMyGovernmentComplaints",
+    "RelativePath": "api/complaint/myGovernmentComplaints",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SGCP.Controllers.ComplaintTypeController",
+    "Method": "DeleteType",
+    "RelativePath": "api/complaintType/{id}/Delete",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SGCP.Controllers.ComplaintTypeController",
+    "Method": "GetComplaintType",
+    "RelativePath": "api/complaintType/{id}/GetType",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "SGCP.DTOs.Responses.ComplaintTypeResponseDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SGCP.Controllers.ComplaintTypeController",
+    "Method": "UpdateType",
+    "RelativePath": "api/complaintType/{id}/Update",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "Name",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "SGCP.DTOs.Responses.ComplaintTypeResponseDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SGCP.Controllers.ComplaintTypeController",
     "Method": "CreateComplaintType",
-    "RelativePath": "api/Complaint/Type/Create",
+    "RelativePath": "api/complaintType/Create",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -232,9 +446,87 @@
     ]
   },
   {
-    "ContainingType": "SGCP.Controllers.ComplaintController",
-    "Method": "UpdateType",
-    "RelativePath": "api/Complaint/Type/Update/{id}",
+    "ContainingType": "SGCP.Controllers.ComplaintTypeController",
+    "Method": "GetAllTypes",
+    "RelativePath": "api/complaintType/GetTypes",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.ICollection\u00601[[SGCP.DTOs.Responses.ComplaintTypeResponseDto, SGCP, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SGCP.Controllers.GovernmentController",
+    "Method": "DeleteGovernment",
+    "RelativePath": "api/Government/{id}/Delete",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SGCP.Controllers.GovernmentController",
+    "Method": "GetGovernmentEmployees",
+    "RelativePath": "api/Government/{id}/employees",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SGCP.Controllers.GovernmentController",
+    "Method": "GetGovernment",
+    "RelativePath": "api/Government/{id}/GetGovernment",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "GovernmentResponseDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SGCP.Controllers.GovernmentController",
+    "Method": "UpdateGovernment",
+    "RelativePath": "api/Government/{id}/update",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -252,7 +544,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "SGCP.DTOs.Responses.ComplaintTypeResponseDto",
+        "Type": "GovernmentResponseDto",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -287,6 +579,244 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "SGCP.Controllers.GovernmentController",
+    "Method": "GetAllGovernments",
+    "RelativePath": "api/Government/GetGovernments",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SGCP.Controllers.AuditLogController",
+    "Method": "GetAuditLog",
+    "RelativePath": "api/Log/{id}/GetAuditLog",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SGCP.Controllers.AuditLogController",
+    "Method": "GetAuditLogsByUser",
+    "RelativePath": "api/Log/{userId}/GetAuditLogsByUser",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SGCP.Controllers.AuditLogController",
+    "Method": "GetAuditLogs",
+    "RelativePath": "api/Log/GetAuditLogs",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SGCP.Controllers.AuditLogController",
+    "Method": "GetAuditLogsByEntity",
+    "RelativePath": "api/Log/GetAuditLogsByEntity",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "entity",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "entityId",
+        "Type": "System.Nullable\u00601[[System.Int32, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SGCP.Controllers.NotificationController",
+    "Method": "SendNotificationAsync",
+    "RelativePath": "api/notification/send",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Title",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Body",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "type",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tokens",
+        "Type": "System.Collections.Generic.List\u00601[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SGCP.Controllers.NotificationController",
+    "Method": "SendNotificationToAllUsersAsync",
+    "RelativePath": "api/notification/send/all",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Title",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Body",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "type",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Tokens",
+        "Type": "System.Collections.Generic.List\u00601[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SGCP.Controllers.NotificationController",
+    "Method": "SendBroadcastNotificationAsync",
+    "RelativePath": "api/notification/send/broadcast",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Title",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Body",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "type",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SGCP.Controllers.NotificationController",
+    "Method": "SendNotificationToUserById",
+    "RelativePath": "api/notification/send/unicast",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "UserId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Title",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Body",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "type",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "ReportController",
+    "Method": "GetComplaintHistoryPdf",
+    "RelativePath": "api/Report/complaint/{id}/history",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SGCP.Controllers.UserController",
+    "Method": "GetAllUsers",
+    "RelativePath": "api/User/GetUsers",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "SGCP.Controllers.UserController",

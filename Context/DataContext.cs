@@ -21,6 +21,9 @@ namespace SGCP.Context
         public DbSet<ComplaintHistory> ComplaintHistories { get; set; }
         public DbSet<ComplaintLock> ComplaintLocks { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<OtpCode> OtpCodes { get; set; }
+        public DbSet<AuditLog> AuditLogs { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -120,6 +123,53 @@ namespace SGCP.Context
                 .WithOne(c => c.Role)
                 .HasForeignKey(c => c.RoleId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ComplaintHistory>()
+               .HasOne(h => h.Complaint)
+               .WithMany(c => c.History)
+               .HasForeignKey(h => h.ComplaintId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            // History -> Employee (User)
+            modelBuilder.Entity<ComplaintHistory>()
+                .HasOne(h => h.Employee)
+                .WithMany(u => u.ComplaintHistories)
+                .HasForeignKey(h => h.EmployeeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // History -> Government
+            modelBuilder.Entity<ComplaintHistory>()
+                .HasOne(h => h.Government)
+                .WithMany(g => g.ComplaintHistories)
+                .HasForeignKey(h => h.GovernmentId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // History -> Complaint Type
+            modelBuilder.Entity<ComplaintHistory>()
+                .HasOne(h => h.Type)
+                .WithMany(t => t.ComplaintHistories)
+                .HasForeignKey(h => h.TypeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // ------------------------------
+            // Audit Logs
+            // ------------------------------
+            modelBuilder.Entity<AuditLog>()
+                .HasOne(a => a.User)
+                .WithMany(u => u.AuditLogs)
+                .HasForeignKey(a => a.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<AuditLog>()
+                .Property(a => a.Action)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            modelBuilder.Entity<AuditLog>()
+                .Property(a => a.Entity)
+                .IsRequired()
+                .HasMaxLength(100);
+
         }
 
     }

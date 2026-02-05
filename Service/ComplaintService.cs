@@ -50,6 +50,18 @@ namespace SGCP.Service
 
         }
 
+        public async Task<Complaint?> GetComplaintByReferenceNumber(string number)
+        {
+            return await _context.Complaints
+                .Include(c => c.Attachments)
+                .Include(c => c.History)
+                .Include(c => c.User)
+                .Include(c => c.Government)
+                .Include(c => c.Type)
+                .FirstOrDefaultAsync(c => c.ReferenceNumber == number);
+
+        }
+
         public ICollection<Complaint> GetComplaints()
         {
             return _context.Complaints
@@ -87,6 +99,7 @@ namespace SGCP.Service
             return await Save();
         }
 
+
         public async Task<bool> Save()
         {
             return await _context.SaveChangesAsync() > 0;
@@ -107,7 +120,72 @@ namespace SGCP.Service
                 .Where(a => a.ComplaintId == complaintId)
                 .ToListAsync();
         }
+        public async Task<bool> AddHistoryAsync(ComplaintHistory history)
+        {
+            await _context.ComplaintHistories.AddAsync(history);
+            return await Save();
+        }
+        public async Task<string> LockComplaint(int complaintId, int userId, int durationMinutes = 1440)
+        {
+            var complaint = await GetComplaint(complaintId);
+            if (complaint == null)
+                return "Complaint not found";
 
+            var existingLock = await _context.ComplaintLocks
+                .FirstOrDefaultAsync(l => l.ComplaintId == complaintId);
+
+            if (existingLock != null)
+            {
+                if (existingLock.ExpiresAt > DateTime.UtcNow)
+                {
+                    if (existingLock.UserId != userId)
+                    {
+                        // Lock نشط لموظف آخر
+                        return "This complaint is being processed by another employee.";
+                    }
+                }
+                else
+                {
+                    // Lock منتهي => إعادة القفل للموظف الحالي
+                    existingLock.UserId = userId;
+                    existingLock.LockedAt = DateTime.UtcNow;
+                    existingLock.ExpiresAt = DateTime.UtcNow.AddMinutes(durationMinutes);
+                }
+            }
+            else
+            {
+                // لا يوجد Lock => إنشاء جديد
+                var newLock = new ComplaintLock
+                {
+                    ComplaintId = complaintId,
+                    UserId = userId,
+                    LockedAt = DateTime.UtcNow,
+                    ExpiresAt = DateTime.UtcNow.AddMinutes(durationMinutes)
+                };
+                await _context.ComplaintLocks.AddAsync(newLock);
+            }
+
+            await Save();
+            return "Lock acquired successfully";
+        }
+
+        public async Task UnlockComplaint(int complaintId, int userId)
+        {
+            var existingLock = await _context.ComplaintLocks
+                .FirstOrDefaultAsync(l => l.ComplaintId == complaintId && l.UserId == userId);
+
+            if (existingLock != null)
+            {
+                _context.ComplaintLocks.Remove(existingLock);
+                await Save();
+            }
+        }
+
+        public async Task<ComplaintLock?> GetActiveLock(int complaintId)
+        {
+            return await _context.ComplaintLocks
+                .FirstOrDefaultAsync(l => l.ComplaintId == complaintId && l.ExpiresAt > DateTime.UtcNow);
+        }
 
     }
 }

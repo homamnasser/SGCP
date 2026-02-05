@@ -5,7 +5,7 @@ namespace SGCP.IService
 {
     public interface IGovernmentService
     {
-        ICollection<Government> GetGovernments();
+        Task<ICollection<Government>> GetGovernments();
         Task<Government?> GetGovernment(int id);
         Task<bool> GovernmentExists(int id);
 

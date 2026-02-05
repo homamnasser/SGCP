@@ -3,6 +3,7 @@ using SGCP.Context;
 using SGCP.IService;
 using SGCP.Models;
 using System;
+using System.Security.Claims;
 
 namespace SGCP.Service
 {
@@ -15,7 +16,7 @@ namespace SGCP.Service
             _context = context;
         }
 
-        public ICollection<User> GetUsers()
+        public async Task <ICollection<User>> GetUsers()
         {
             return _context.Users
                            .Include(u => u.Role)
@@ -108,5 +109,37 @@ namespace SGCP.Service
         {
             return await _context.SaveChangesAsync() > 0;
         }
+
+        public async Task<bool> IsUserActive(int userId)
+        {
+            return await _context.Users
+                .AnyAsync(u => u.Id == userId && u.IsActive == true );
+        }
+
+
+
+        public async Task<string?> GetUserFcmToken(int userId)
+        {
+            return await _context.Users
+                .Where(u => u.Id == userId)
+                .Select(u => u.FcmToken)
+                .FirstOrDefaultAsync();
+        }
+
+
+        public async Task<bool> UpdateFcmTokenAsync(int userId, string fcmToken)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            user.FcmToken = fcmToken;
+
+            return await _context.SaveChangesAsync() > 0;
+        }
+
     }
 }

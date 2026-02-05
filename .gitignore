@@ -1,0 +1,12 @@
+# منع رفع مفاتيح Firebase الحساسة
+sgcp-2026-firebase-adminsdk-fbsvc-b754bd79d2.json
+*.publishSettings
+
+# منع رفع مجلدات بناء المشروع (التشغيل المحلي)
+bin/
+obj/
+.vs/
+
+# منع رفع إعدادات المستخدم الشخصية
+.vscode/
+*.user

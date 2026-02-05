@@ -21,6 +21,9 @@ namespace SGCP.Models
         public ComplaintStatus Status { get; set; } 
 
         public string ReferenceNumber { get; set; }
+        public string Note { get; set; }
+
+
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

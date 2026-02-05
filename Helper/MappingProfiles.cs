@@ -16,6 +16,9 @@ namespace SGCP.Helper
             CreateMap<ComplaintType, ComplaintTypeResponseDto>().ReverseMap();
             CreateMap<Complaint, ComplaintResponseDto>().ReverseMap();
             CreateMap<ComplaintAttachment, AttachmentResponseDto>().ReverseMap();
+            CreateMap<ComplaintHistory, ComplaintHistoryResponseDto>().ReverseMap();
+            CreateMap<AuditLog, AuditLogResponseDto>().ReverseMap();
+            CreateMap<Notification, NotificationResponseDto>().ReverseMap();
 
 
 
